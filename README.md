@@ -1,6 +1,6 @@
 # Python Devcontainer
 
-A basic python development environment example using devcontainers.
+A basic python development environment example using [devcontainers](https://code.visualstudio.com/docs/devcontainers/containers), [uv](https://docs.astral.sh/uv/), and [ruff](https://docs.astral.sh/ruff/).
 
 ## Extensions
 
