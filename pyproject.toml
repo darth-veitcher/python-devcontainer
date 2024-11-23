@@ -1,0 +1,23 @@
+[project]
+name = "python-devcontainer"
+version = "0.1.0"
+description = "A minimal example of a Python project"
+authors = [
+    { name = "darth-veitcher", email = "1722315+darth-veitcher@users.noreply.github.com" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.10"  # enforce a sane default
+
+[project.scripts]
+dev = "python_devcontainer.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/python_devcontainer"]
