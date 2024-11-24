@@ -1,0 +1,9 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached  # Mount the project root directory
+    extra_hosts:
+      - host.docker.internal:host-gateway  # access host's `localhost` using `host.docker.internal`

@@ -21,3 +21,8 @@ allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/python_devcontainer"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13.0",
+]

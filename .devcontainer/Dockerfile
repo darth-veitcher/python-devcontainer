@@ -28,11 +28,13 @@ RUN groupadd --gid $USER_GID $USERNAME \
 # Install uv
 # https://docs.astral.sh/uv/configuration/installer/
 ENV XDG_BIN_HOME=/usr/local/bin
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV UV_LINK_MODE=copy
 
 # Install Python tools
-RUN pip install --no-cache-dir \
+RUN python -m pip install --no-cache-dir \
+    uv \
     ruff \
+    mypy \
     pytest \
     pytest-cov \
     pytest-asyncio \
@@ -51,5 +53,6 @@ USER $USERNAME
 RUN git config --global core.editor "code --wait" \
     && git config --global init.defaultBranch main
 
-# Set default shell to bash
+# Set default shell to bash and adjust path for pyproject scripts
 ENV SHELL /bin/bash
+ENV PATH=/home/$USERNAME/.local/bin:$PATH
