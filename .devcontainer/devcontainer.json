@@ -4,7 +4,10 @@
         "dockerfile": "Dockerfile",
         "context": "..",
         "args": {
-            "PYTHON_VERSION": "3.12"
+            "PYTHON_VERSION": "3.12",
+            "USERNAME": "${localEnv:USER}"
+            // "USER_UID": "${localEnv:REMOTE_UID:1000}",
+            // "USER_GID": "${localEnv:REMOTE_GID:1000}"
         }
     },
     "customizations": {
@@ -64,9 +67,10 @@
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "postCreateCommand": "uv sync --all-extras && mypy --install-types --non-interactive || true",
-    "remoteUser": "vscode",
+    "remoteUser": "${localEnv:USER}",
+    "updateRemoteUserUID": true,
     "mounts": [
-        "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,consistency=cached"
     ],
     "runArgs": ["--env-file","${localWorkspaceFolder}/.env"]
 }
