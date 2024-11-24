@@ -76,8 +76,5 @@
     "remoteUser": "${localEnv:USER}",
     "containerUser": "${localEnv:USER}",
     "updateRemoteUserUID": true,
-    // "mounts": [
-    //     "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=volume"
-    // ],
     "runArgs": ["--env-file","${localWorkspaceFolder}/.env"]
 }
