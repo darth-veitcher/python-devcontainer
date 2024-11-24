@@ -3,12 +3,18 @@
     "build": {
         "dockerfile": "Dockerfile",
         "context": "..",
+        "env_file": "../.env",
         "args": {
             "PYTHON_VERSION": "3.12",
-            "USERNAME": "${localEnv:USER}"
-            // "USER_UID": "${localEnv:REMOTE_UID:1000}",
-            // "USER_GID": "${localEnv:REMOTE_GID:1000}"
+            "USERNAME": "${localEnv:USER}",
+            "USER_UID": "${localEnv:UID}",
+            "USER_GID": "${localEnv:GID}"
         }
+    },
+    "features": {
+        "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {},
+        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     },
     "customizations": {
         "vscode": {
@@ -59,7 +65,6 @@
                 },
                 "files.trimTrailingWhitespace": true,
                 "files.insertFinalNewline": true
-            }
         }
     },
     "features": {
@@ -67,10 +72,12 @@
         "ghcr.io/devcontainers/features/github-cli:1": {}
     },
     "postCreateCommand": "uv sync --all-extras && mypy --install-types --non-interactive || true",
+    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && git config --global core.editor 'code --wait' && git config --global init.defaultBranch main",
     "remoteUser": "${localEnv:USER}",
+    "containerUser": "${localEnv:USER}",
     "updateRemoteUserUID": true,
-    "mounts": [
-        "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,consistency=cached"
-    ],
+    // "mounts": [
+    //     "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=volume"
+    // ],
     "runArgs": ["--env-file","${localWorkspaceFolder}/.env"]
 }

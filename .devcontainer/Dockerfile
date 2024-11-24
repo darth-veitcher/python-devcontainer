@@ -13,6 +13,7 @@ RUN apt-get update \
     libffi-dev \
     libssl-dev \
     openssh-client \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
@@ -20,8 +21,12 @@ ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+RUN useradd -m $USERNAME \
+    && groupmod --gid $USER_GID $USERNAME || true \
+    && usermod --uid $USER_UID --gid $USER_GID $USERNAME || true \
+    && chown -R $USER_UID:$USER_GID /home/$USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME \
     && mkdir -p /workspace \
     && chown -R $USERNAME:$USERNAME /workspace
 
@@ -49,9 +54,9 @@ WORKDIR /workspaces
 # Switch to non-root user
 USER $USERNAME
 
-# Configure Git
-RUN git config --global core.editor "code --wait" \
-    && git config --global init.defaultBranch main
+# # Configure Git
+# RUN git config --global core.editor "code --wait" \
+#     && git config --global init.defaultBranch main
 
 # Set default shell to bash and adjust path for pyproject scripts
 ENV SHELL /bin/bash
